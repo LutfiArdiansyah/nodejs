@@ -17,35 +17,19 @@ viewEngineSetup();
 
 routes();
 
-// catch 404 and forward to error handler
-app.use(function (req, res, next) {
-  res.status(404);
-  res.json(new BaseResponse(req.path.concat(" not found.")), null, true);
-});
-
-// error handler
-app.use(function (err, req, res, next) {
-  loggingError(req, err);
-  res.status(err.status || 500);
-  res.json(
-    new BaseResponse(
-      err.message,
-      req.app.get("env") === "development" ? err.stack : null,
-      true
-    )
-  );
-});
-
 function routes() {
   var indexRouter = require("./routes/index-router");
+
   var usersRouter = require("./routes/users-router");
 
   app.use("/", indexRouter);
+
   app.use("/users", usersRouter);
 }
 
 function viewEngineSetup() {
   app.set("views", path.join(__dirname, "views"));
+
   app.set("view engine", "jade");
 }
 
@@ -66,6 +50,26 @@ function appUse() {
 
   app.use(helmet());
 }
+
+// catch 404 and forward to error handler
+app.use(function (req, res, next) {
+  res.status(404);
+  res.json(new BaseResponse(req.path.concat(" not found.")), null, true);
+});
+
+// error handler
+app.use(function (err, req, res, next) {
+  loggingError(req, err);
+  
+  res.status(err.status || 500);
+  res.json(
+    new BaseResponse(
+      err.message,
+      req.app.get("env") === "development" ? err.stack : null,
+      true
+    )
+  );
+});
 
 function loggingError(req, err) {
   console.error({
