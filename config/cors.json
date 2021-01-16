@@ -1,0 +1,6 @@
+{
+  "origin": ["http://localhost:4200"],
+  "method": ["GET", "PUT", "POST"],
+  "allowedHeaders": ["Content-Type", "Authorization"],
+  "preflightContinue": true
+}
